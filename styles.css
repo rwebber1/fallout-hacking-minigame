@@ -1,0 +1,179 @@
+:root {
+    --svg-screen-ratio: calc(455/980);
+    --screen-width-height-ratio: calc(455/350);
+    --screen-width: min(1024px, 90vw, calc(90vh * var(--screen-width-height-ratio)));
+    --screen-height: calc(var(--screen-width) / var(--screen-width-height-ratio));
+    --terminal-result-width: calc(var(--screen-width) / var(--svg-screen-ratio));
+    --svg-ratio: calc(var(--terminal-result-width) / 980);
+    --screen-x: calc((100vw - var(--screen-width))/2);
+    --terminal-x: calc(var(--screen-x) - (var(--svg-ratio) * 273.5));
+    --screen-y: min(calc(var(--svg-ratio) * 147.2), (100vh - var(--screen-height))/2);
+    --terminal-y: calc(var(--screen-y) - (var(--svg-ratio) * 147.2));
+    --screen-border-radius-x: calc(100% * (43 / 455));
+    --screen-border-radius-y: calc(100% * (43 / 350));
+    --padding: calc(7%);
+    --inner-width: calc(var(--screen-width) - var(--padding) * 2);
+    --inner-height: calc(var(--screen-height) - var(--padding) * 2);
+    --num-rows: calc(17 + 3 + 2);
+    --num-cols: calc(12 * 2 + 6 * 2 + 13 + 4 + 6);
+    --character-scale: calc(20/24);
+    --character-ratio: calc(1.65);
+    --character-max-width: calc((var(--inner-width) / var(--num-cols)) * var(--character-ratio));
+    --character-max-height: calc((var(--inner-height) / var(--num-rows)) * var(--character-scale));
+    --font-size: min(var(--character-max-width), var(--character-max-height));
+    --character-width: calc(var(--font-size) / var(--character-ratio));
+    --character-height: calc(var(--font-size) / var(--character-scale));
+    --occupied-width: calc(var(--num-cols) * var(--character-width));
+    --occupied-height: calc(var(--num-rows) * var(--character-height));
+    --letter-spacing: calc((var(--inner-width) - var(--occupied-width)) / (var(--num-cols) + 3));
+    --line-extra: calc((var(--inner-height) - var(--occupied-height)) / var(--num-rows));
+    --line-height: calc(var(--font-size) + var(--line-extra))
+}
+
+body {
+    background-color: black;
+    color: #00FF00;
+    font-family: monospace;
+    font-size: var(--font-size);
+    letter-spacing: var(--letter-spacing);
+    line-height: var(--line-height);
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: var(--padding);
+    cursor: default;
+    overflow: hidden
+}
+
+.terminal-screen {
+    position: absolute;
+    width: calc(var(--screen-width));
+    height: calc(var(--screen-height));
+    text-shadow: 0em 0em 0.5em #00FF00;
+    font-family: monospace;
+    color: #00FF00;
+    font-weight: bold;
+    
+    border: 2px solid #00FF00;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    margin: 100px auto;
+    background-color: #000000;
+
+    /* Adding background image */
+    background-image: url('./assets/images/greenscreen.png');
+    background-size: 100% 100%; /* Ensures the image covers the terminal */
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.terminal-header {
+    user-select: none; 
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.terminal-body {
+    display: flex;
+    width: 100vw;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.attempts-left {
+    margin-bottom: 10px;
+    user-select: none; 
+}
+
+.word-grid {
+    color: #00FF00;
+    display: flex;
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: auto;
+
+    white-space: pre;
+    text-shadow: 0em 0em 0.5em #23824C;
+
+    overflow-y: auto; /* In case there are too many submissions */
+    height: 100%;
+    overflow-x: hidden;
+    gap: 10px;
+}
+
+.hex-address {
+    user-select: none; /* Prevent selection of hex address */
+}
+
+.data {
+    display: block;
+}
+
+.word {
+    cursor: pointer;
+    color: #00FF00;
+    display: inline-block;
+}
+
+.word:hover {
+    background-color: #00FF00;
+    color: #000000;
+}
+
+.symbol {
+    cursor: default;
+}
+
+.symbol:hover {
+    background-color: #00FF00;
+    color: #000000;
+}
+
+.output {
+    flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+    vertical-align: top;
+}
+
+.input {
+    padding-left: 10px;
+    color: #00FF00;
+    display: inline-block;
+    bottom: 0;
+}
+
+.entry {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    white-space: nowrap;
+}
+
+@keyframes flash {
+    0% {
+        opacity: 0.0
+    }
+
+    50% {
+        opacity: 1.0
+    }
+
+    100% {
+        opacity: 0.0
+    }
+}
+
+.flashing-cursor {
+    animation: flash 0.5s step-start 0s infinite;
+    -webkit-animation: flash 0.5s step-start 0s infinite
+}
+
+.submission-log {
+    color: #00FF00;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
