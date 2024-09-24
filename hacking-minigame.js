@@ -14,6 +14,20 @@ document.addEventListener("DOMContentLoaded", () => {
     setupWordInteraction();
 });
 
+document.addEventListener('mouseover', function(event) {
+    if (event.target.tagName.toLowerCase() === 'span' && event.target.classList != 'hex-address') {
+        const promptElement = document.getElementById('entry');
+        promptElement.innerHTML = `${event.target.textContent}`;
+    }
+});
+
+document.addEventListener('mouseout', function(event) {
+    if (event.target.tagName.toLowerCase() === 'span' && event.target.classList != 'hex-address') {
+        const promptElement = document.getElementById('entry');
+        promptElement.innerHTML = '';  // Reset to just '>' when mouse leaves
+    }
+});
+
 function generateTerminalDisplay() {
     generateHexAddresses();
     generateData();
@@ -104,6 +118,43 @@ function setupWordInteraction() {
         });
     });
 }
+
+var hover = function(span) {
+    // unhighlightAll();
+    if (symbolSpansRight.includes(span)) {
+        var pos = symbolSpansRight.indexOf(span);
+        hackingCursorX = 12 + (pos % 12);
+        hackingCursorY = Math.floor(pos / 12)
+    } else {
+        var pos = symbolSpansLeft.indexOf(span);
+        hackingCursorX = pos % 12;
+        hackingCursorY = Math.floor(pos / 12)
+    }
+    if (span.classList.contains("word")) {
+        var word = span.attributes["data-word"];
+        var wordSpans = document.getElementsByClassName("word-" + word);
+        for (var i = 0; i < wordSpans.length; i += 1) {
+            var wordSpan = wordSpans[i];
+            wordSpan.classList.add("highlight")
+        }
+        // setEntry(word)\
+        console.log(word)
+    } else if (span.classList.contains("bracketroot")) {
+        let bracketGroup = span.attributes["data-bracketroot"];
+        let bracketStr = span.attributes["data-bracketstr"];
+        var bracketSpans = document.getElementsByClassName("bracketpair-" + bracketGroup);
+        for (let i = 0; i < bracketSpans.length; i += 1) {
+            let bracketSpan = bracketSpans[i];
+            bracketSpan.classList.add("highlight")
+        }
+        // setEntry(bracketStr)
+        console.log(span.textContent)
+    } else {
+        // span.classList.add("highlight");
+        // setEntry(span.textContent)
+        console.log(span.textContent)
+    }
+};
 
 function checkGuess(userGuess) {
     if (attempts > 0 && userGuess.length === correctPassword.length) {
