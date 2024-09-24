@@ -16,15 +16,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
 document.addEventListener('mouseover', function(event) {
     if (event.target.tagName.toLowerCase() === 'span' && event.target.classList != 'hex-address') {
-        const promptElement = document.getElementById('entry');
-        promptElement.innerHTML = `${event.target.textContent}`;
+        const entry = document.getElementById('entry');
+        entry.innerHTML = `${event.target.textContent}`;
     }
 });
 
 document.addEventListener('mouseout', function(event) {
     if (event.target.tagName.toLowerCase() === 'span' && event.target.classList != 'hex-address') {
-        const promptElement = document.getElementById('entry');
-        promptElement.innerHTML = '';  // Reset to just '>' when mouse leaves
+        const entry = document.getElementById('entry');
+        entry.innerHTML = '';  // Reset to just '>' when mouse leaves
     }
 });
 
