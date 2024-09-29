@@ -1,6 +1,6 @@
 
 // Globals
-const wordList = ["MUTANT", "BUTANE", "ACADE", "UNMASK", "PYRONE"];
+const wordList = ["MUTANT", "BUTANE", "ARCADE", "UNMASK", "PYRONE"];
 const wordLength = 6;
 const symbols = "~#!\"$%^&*()_-+=[]{}?/,."
 const correctPassword = wordList[Math.floor(Math.random() * wordList.length)];
@@ -8,6 +8,8 @@ const MAX_ROWS = 17;
 const ROW_SIZE = 12;
 
 let attempts = 4;
+
+console.log("Correct Word:", correctPassword)
 
 document.addEventListener("DOMContentLoaded", () => {
     generateTerminalDisplay();
@@ -141,39 +143,57 @@ function setupWordInteraction() {
     const wordElements = document.querySelectorAll('.word');
     wordElements.forEach(word => {
         word.addEventListener('click', () => {
-            const selectedWord = word.textContent;
+            const selectedWord = word.getAttribute('word-id');
             checkGuess(selectedWord);
         });
     });
 }
 
 function checkGuess(userGuess) {
+    console.log(userGuess)
     if (attempts > 0 && userGuess.length === correctPassword.length) {
         let correctLetters = 0;
+
         for (let i = 0; i < userGuess.length; i++) {
             if (userGuess[i] === correctPassword[i]) correctLetters++;
         }
 
-        let feedbackMessage = `${correctLetters}/5 correct letters`;
         if (correctLetters === correctPassword.length) {
-            feedbackMessage = "Access Granted! Welcome!";
-            window.location.href = 'https://your-guest-portal-url.com'; // Success, redirect user
+            addSubmissionMessage(userGuess)
+            addSubmissionMessage("Exact Match!")
+            addSubmissionMessage("Please wait")
+            addSubmissionMessage("while system")
+            addSubmissionMessage("is accessed.")
+            //window.location.href = 'https://your-guest-portal-url.com'; // Success, redirect user
         }
-
-        document.getElementById('submission-log').innerText = feedbackMessage;
-        attempts--;
-        updateAttemptsDisplay();
+        else{
+            addSubmissionMessage(userGuess)
+            addSubmissionMessage("Entry Denied")
+            addSubmissionMessage(`${correctLetters}/${correctPassword.length} correct.`)
+            attempts--;
+            updateAttemptsDisplay();
+        }
     }
-
     if (attempts <= 0) {
-        document.getElementById('submission-log').innerText = "Access Denied. Please try again.";
+        document.getElementById('submission-log').textContent = "Access Denied. Please try again.";
         disableWordInteraction();
     }
+}
+
+function addSubmissionMessage(message) {
+    var submission_logs = document.getElementById('submission-log')
+    let new_span = document.createElement("span")
+    new_span.textContent = '>' + message
+    submission_logs.prepend(new_span)
 }
 
 function updateAttemptsDisplay() {
     const attemptsElement = document.querySelector('.attempts-left');
     attemptsElement.innerText = `${attempts} Attempt(s) Left: ${' █ '.repeat(attempts)}${' '.repeat(4 - attempts)}`;
+    if(attempts <= 1){
+        document.querySelector('.terminal-message').innerText = "!!! WARNING: LOCKOUT IMMINENT !!!"
+        document.querySelector('.terminal-message').className = "blinker"
+    }
 }
 
 function disableWordInteraction() {
