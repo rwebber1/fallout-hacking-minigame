@@ -42,7 +42,8 @@ body {
     margin: 0;
     padding: var(--padding);
     cursor: default;
-    overflow: hidden
+    overflow: hidden;
+    user-select: none;
 }
 
 .terminal-screen {
