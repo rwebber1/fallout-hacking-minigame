@@ -2,7 +2,6 @@
 // Globals
 const wordList = ["MUTANT", "BUTANE", "ACADE", "UNMASK", "PYRONE"];
 const wordLength = 6;
-const randomChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const symbols = "~#!\"$%^&*()_-+=[]{}?/,."
 const correctPassword = wordList[Math.floor(Math.random() * wordList.length)];
 const MAX_ROWS = 17;
@@ -15,19 +14,32 @@ document.addEventListener("DOMContentLoaded", () => {
     setupWordInteraction();
 });
 
-document.addEventListener('mouseover', function (event) {
+document.addEventListener('mouseenter', function (event) {
     if (event.target.tagName.toLowerCase() === 'span' && event.target.classList != 'hex-address') {
-        const entry = document.getElementById('entry');
-        entry.innerHTML = `${event.target.textContent}`;
+        entry = document.getElementById('entry');
+        if(event.target.classList.contains('word')){
+            word = event.target.getAttribute('word-id')
+            word_span = document.querySelectorAll(`[word-id="${word}"]`)
+            word_span.forEach(span => {span.classList.add('highlight')})
+            entry.textContent = word
+        }
+        else if (event.target.classList.contains('symbol')){
+            entry.textContent = `${event.target.textContent}`
+        }
     }
-});
+}, true);
 
-document.addEventListener('mouseout', function (event) {
+document.addEventListener('mouseleave', function (event) {
     if (event.target.tagName.toLowerCase() === 'span' && event.target.classList != 'hex-address') {
-        const entry = document.getElementById('entry');
+        entry = document.getElementById('entry');
+        if(event.target.classList.contains('word')){
+            word = event.target.getAttribute('word-id')
+            word_span = document.querySelectorAll(`[word-id="${word}"]`)
+            word_span.forEach(span => {span.classList.remove('highlight')})
+        }
         entry.innerHTML = '';  // Reset to just '>' when mouse leaves
     }
-});
+}, true);
 
 function generateTerminalDisplay() {
     var data_array_col1 = document.getElementById('column2')
@@ -63,11 +75,11 @@ function generateHexAddresses() {
     }
 }
 
-// TODO: Generate content then organize OR Generate content while building
 function generateData(data_array) {
     var symbolSinceWord = 0
     var row_count = 0
     var word = []
+    var current_word = ""
 
     while (row_count < MAX_ROWS) {
         var current_span = document.createElement("span")
@@ -87,6 +99,7 @@ function generateData(data_array) {
             else if (word.length > 0) {
                 let new_character = document.createElement("span")
                 new_character.classList.add("word")
+                new_character.setAttribute('word-id', current_word)
                 new_character.textContent = word[0]
                 current_span.appendChild(new_character)
                 word.shift()
@@ -94,8 +107,8 @@ function generateData(data_array) {
             // Add word
             else if (wordList.length != 0) {
                 let word_position = Math.floor(Math.random() * wordList.length)
-                let new_word = wordList[word_position]
-                for (let i = 0; i < new_word.length; i++) { word.push(new_word.charAt(i)) }
+                current_word = wordList[word_position]
+                for (let i = 0; i < current_word.length; i++) { word.push(current_word.charAt(i)) }
                 wordList.splice(word_position, 1)
                 symbolSinceWord = 0
             }
