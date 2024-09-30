@@ -14,6 +14,7 @@ console.log("Correct Word:", correctPassword)
 document.addEventListener("DOMContentLoaded", () => {
     generateTerminalDisplay();
     setupWordInteraction();
+    setupSymbolInteraction();
 });
 
 document.addEventListener('mouseenter', function (event) {
@@ -149,8 +150,17 @@ function setupWordInteraction() {
     });
 }
 
+function setupSymbolInteraction() {
+    const symbolElements = document.querySelectorAll('.symbol');
+    symbolElements.forEach(symbol => {
+        symbol.addEventListener('click', () => {
+            const selectedSymbol = symbol.textContent;
+            checkGuess(selectedSymbol);
+        });
+    });
+}
+
 function checkGuess(userGuess) {
-    console.log(userGuess)
     if (attempts > 0 && userGuess.length === correctPassword.length) {
         let correctLetters = 0;
 
@@ -174,31 +184,35 @@ function checkGuess(userGuess) {
             updateAttemptsDisplay();
         }
     }
-    if (attempts <= 0) {
-        document.getElementById('submission-log').textContent = "Access Denied. Please try again.";
-        disableWordInteraction();
+    else if(userGuess.length === 1 && symbols.includes(userGuess)){
+        console.log("clicked symbol")
+        addSubmissionMessage(userGuess)
+        addSubmissionMessage("Error")
     }
 }
 
+// function addSubmissionMessage(message) {
+//     var submission_logs = document.getElementById('submission-log')
+//     let new_span = document.createElement("span")
+//     new_span.textContent = '>' + message
+//     submission_logs.prepend(new_span)
+// }
+
 function addSubmissionMessage(message) {
-    var submission_logs = document.getElementById('submission-log')
-    let new_span = document.createElement("span")
-    new_span.textContent = '>' + message
-    submission_logs.prepend(new_span)
+    var submission_logs = document.getElementById('submission-log').innerHTML
+    submission_logs += '>' + message + "<br>"
+    document.getElementById('submission-log').innerHTML = submission_logs
 }
 
 function updateAttemptsDisplay() {
     const attemptsElement = document.querySelector('.attempts-left');
     attemptsElement.innerText = `${attempts} Attempt(s) Left: ${' █ '.repeat(attempts)}${' '.repeat(4 - attempts)}`;
-    if(attempts <= 1){
+    if(attempts === 1){
         document.querySelector('.terminal-message').innerText = "!!! WARNING: LOCKOUT IMMINENT !!!"
         document.querySelector('.terminal-message').className = "blinker"
     }
-}
-
-function disableWordInteraction() {
-    const wordElements = document.querySelectorAll('.word');
-    wordElements.forEach(word => {
-        word.style.pointerEvents = 'none';
-    });
+    if (attempts === 0) {
+        addSubmissionMessage("Lockout in")
+        addSubmissionMessage("progress.")
+    }
 }

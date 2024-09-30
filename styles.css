@@ -35,15 +35,16 @@ body {
     color: #00FF00;
     font-family: monospace;
     font-size: var(--font-size);
-    letter-spacing: var(--letter-spacing);
     line-height: var(--line-height);
-    width: 100vw;
-    height: 100vh;
     margin: 0;
     padding: var(--padding);
     cursor: default;
     overflow: hidden;
     user-select: none;
+}
+
+.terminal {
+    display: flex;
 }
 
 .terminal-screen {
@@ -65,21 +66,16 @@ body {
     /* Adding background image */
     background-image: url('./assets/images/greenscreen.png');
     background-size: 100% 100%; /* Ensures the image covers the terminal */
-    background-position: center;
-    background-repeat: no-repeat;
 }
 
 .terminal-header {
     user-select: none; 
-    flex-grow: 0;
-    flex-shrink: 0;
 }
 
 .terminal-body {
     display: flex;
-    width: 100vw;
-    justify-content: space-between;
-    gap: 10px;
+    gap: 1ch;
+    text-shadow: 0em 0em 0.5em #23824C;
 }
 
 .attempts-left {
@@ -88,20 +84,9 @@ body {
 }
 
 .word-grid {
-    color: #00FF00;
     display: flex;
-    flex-grow: 0;
-    flex-shrink: 0;
-    flex-basis: auto;
-    cursor: default;
-
     white-space: pre;
-    text-shadow: 0em 0em 0.5em #23824C;
-
-    overflow-y: auto; /* In case there are too many submissions */
-    height: 100%;
-    overflow-x: hidden;
-    gap: 10px;
+    gap: 1ch;
 }
 
 .hex-address {
@@ -136,18 +121,14 @@ body {
 }
 
 .output {
-    flex-grow: 1;
-	display: flex;
+    display: flex;
 	flex-direction: column;
 	justify-content: flex-end;
-    vertical-align: top;
     padding-left: 10px;
 }
 
 .input {
-    color: #00FF00;
-    display: inline-block;
-    bottom: 0;
+
 }
 
 .entry {
@@ -182,8 +163,6 @@ body {
 }
 
 .submission-log {
-    color: #00FF00;
-    display: flex;
-    flex-direction: column-reverse;
+    margin: 0;
 }
 
