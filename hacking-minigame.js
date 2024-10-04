@@ -6,6 +6,7 @@ const symbols = "~#!\"$%^&*()_-+=[]{}?/,."
 const correctPassword = wordList[Math.floor(Math.random() * wordList.length)];
 const MAX_ROWS = 17;
 const ROW_SIZE = 12;
+const MAX_LOGS = 15;
 
 let attempts = 4;
 
@@ -185,23 +186,18 @@ function checkGuess(userGuess) {
         }
     }
     else if(userGuess.length === 1 && symbols.includes(userGuess)){
-        console.log("clicked symbol")
         addSubmissionMessage(userGuess)
         addSubmissionMessage("Error")
     }
 }
 
-// function addSubmissionMessage(message) {
-//     var submission_logs = document.getElementById('submission-log')
-//     let new_span = document.createElement("span")
-//     new_span.textContent = '>' + message
-//     submission_logs.prepend(new_span)
-// }
-
 function addSubmissionMessage(message) {
-    var submission_logs = document.getElementById('submission-log').innerHTML
-    submission_logs += '>' + message + "<br>"
-    document.getElementById('submission-log').innerHTML = submission_logs
+    let submission_logs = document.getElementById('submission-log')
+    submission_logs.innerHTML += '>' + message + "<br>"
+    while(submission_logs.childElementCount > MAX_LOGS) {
+        submission_logs.removeChild(submission_logs.firstChild)
+    }
+    document.getElementById('submission-log').innerHTML = submission_logs.innerHTML
 }
 
 function updateAttemptsDisplay() {
