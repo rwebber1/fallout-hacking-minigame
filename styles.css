@@ -127,6 +127,15 @@ body {
     padding-left: 10px;
 }
 
+.special{
+
+}
+
+.special:hover{
+    background-color: #00FF00;
+    color: #000000;
+}
+
 .input {
 
 }
