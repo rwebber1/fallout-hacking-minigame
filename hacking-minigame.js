@@ -292,6 +292,8 @@ function handleSpecial(special_id) {
     else{
         attempts = 4
         updateAttemptsDisplay()
+        document.querySelector('.terminal-message').textContent = "ENTER PASSWORD NOW"
+        document.querySelector('.terminal-message').classList.remove("blinker")
         addSubmissionMessage("Allowance")
         addSubmissionMessage("replenished")
     }
@@ -320,8 +322,8 @@ function updateAttemptsDisplay() {
     const attemptsElement = document.querySelector('.attempts-left');
     attemptsElement.innerText = `${attempts} Attempt(s) Left: ${' █ '.repeat(attempts)}${' '.repeat(4 - attempts)}`;
     if(attempts === 1){
-        document.querySelector('.terminal-message').innerText = "!!! WARNING: LOCKOUT IMMINENT !!!"
-        document.querySelector('.terminal-message').className = "blinker"
+        document.querySelector('.terminal-message').textContent = "!!! WARNING: LOCKOUT IMMINENT !!!"
+        document.querySelector('.terminal-message').classList.add("blinker")
     }
     else if (attempts === 0) {
         addSubmissionMessage("Lockout in")
