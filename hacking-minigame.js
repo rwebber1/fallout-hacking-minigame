@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setupSpecialInteraction();
 });
 
-document.addEventListener('mouseenter', function (event) {
+document.querySelector('.terminal-body').addEventListener('mouseenter', function (event) {
     if (event.target.tagName.toLowerCase() === 'span' && event.target.classList != 'hex-address') {
         entry = document.getElementById('entry');
         if(event.target.classList.contains('word')){
@@ -47,7 +47,7 @@ document.addEventListener('mouseenter', function (event) {
     }
 }, true);
 
-document.addEventListener('mouseleave', function (event) {
+document.querySelector('.terminal-body').addEventListener('mouseleave', function (event) {
     if (event.target.tagName.toLowerCase() === 'span' && event.target.classList != 'hex-address') {
         entry = document.getElementById('entry');
         entry.innerHTML = '';  // Reset to just '>' when mouse leaves
