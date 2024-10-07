@@ -1,3 +1,17 @@
+/*
+    FALLOUT THEMED CAPTIVE PORTAL
+    
+        TODO:
+        - lockout function and effect
+        - access granted function and effect
+        - stylized interface
+        - intro effect
+        - typing effect for entry line
+        - typing sounds on hovers
+        - click sound on clicked
+        - success sound for access
+        - fix console bug when clicking a special after it was already used
+*/
 
 // Globals
 const wordList = ["STATING" , "HEALING" , "COSTING", "REASONS", "SEASIDE", "SPARING", "CAUSING", "CRAFTED", "PRISONS", "PRESENT", "DEALING", 
