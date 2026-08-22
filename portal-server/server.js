@@ -112,6 +112,13 @@ app.post('/api/authorize', async (req, res) => {
         res.json({ ok: true });
     } catch (err) {
         console.error('Authorization failed for', mac, '-', err.message);
+        if (err.response) {
+            // The controller responded, it just didn't like the request -
+            // this body usually says exactly why (bad field, unknown action, etc).
+            console.error('  Request URL:', err.config?.method?.toUpperCase(), err.config?.url);
+            console.error('  HTTP status:', err.response.status);
+            console.error('  Response body:', JSON.stringify(err.response.data));
+        }
         res.status(502).json({ ok: false, error: 'could not reach the controller' });
     }
 });
