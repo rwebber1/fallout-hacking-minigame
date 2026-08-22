@@ -136,8 +136,14 @@ async function authorizeV1(mac) {
 
     // Fetch clients and match the MAC client-side rather than relying on a
     // guessed filter query-string syntax, which has shifted between
-    // UniFi Network app versions.
-    const clientsResp = await axios.get(`${base}/clients`, { headers, httpsAgent });
+    // UniFi Network app versions. UniFi paginates this endpoint (default
+    // page size 25) - bump the limit well past any realistic home-network
+    // client count so we always see the whole list in one request.
+    const clientsResp = await axios.get(`${base}/clients`, {
+        headers,
+        httpsAgent,
+        params: { limit: 200 },
+    });
     const clients = clientsResp.data?.data ?? clientsResp.data ?? [];
     const target = clients.find((c) => {
         const candidate = (c.macAddress || c.mac || '').toLowerCase();
