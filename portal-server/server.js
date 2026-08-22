@@ -30,6 +30,13 @@ app.use(express.json());
 // assets/) straight out of the project root, one level up from this folder.
 app.use(express.static(path.join(__dirname, '..')));
 
+// Fallback: UniFi's captive portal redirect can land on paths like
+// /guest/s/<site>/ rather than the bare root. Serve the game regardless
+// of the exact path, since portal-client.js only reads query params.
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'index.html'));
+});
+
 const PORT = process.env.PORT || 8080;
 const MODE = (process.env.UNIFI_API_MODE || 'v1').toLowerCase();
 const CONTROLLER = (process.env.UNIFI_CONTROLLER_URL || '').replace(/\/+$/, '');
