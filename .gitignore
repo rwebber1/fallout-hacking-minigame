@@ -1,0 +1,8 @@
+# Portal server secrets - never commit real credentials
+portal-server/.env
+
+# Dependencies - reinstalled via `npm install` on the target machine
+portal-server/node_modules/
+
+# Logs
+*.log

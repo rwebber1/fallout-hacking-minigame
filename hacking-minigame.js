@@ -1,5 +1,5 @@
 /*
-    FALLOUT THEMED CAPTIVE PORTAL
+    FALLOUT-THEMED CAPTIVE PORTAL
     
         TODO:
         - lockout function and effect
@@ -261,7 +261,7 @@ function checkGuess(userGuess) {
             addSubmissionMessage("Please wait")
             addSubmissionMessage("while system")
             addSubmissionMessage("is accessed.")
-            //window.location.href = 'https://your-guest-portal-url.com'; // Success, redirect user
+            document.dispatchEvent(new CustomEvent('terminal-access-granted')); // portal-client.js listens for this
         }
         else{
             addSubmissionMessage(userGuess)
