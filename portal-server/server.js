@@ -145,6 +145,8 @@ async function authorizeV1(mac) {
     });
 
     if (!target) {
+        console.error(`  Looked for MAC ${mac} among ${clients.length} client(s) returned.`);
+        console.error(`  Raw /clients response: ${JSON.stringify(clientsResp.data).slice(0, 3000)}`);
         throw new Error('client not found yet - has it fully associated to the AP?');
     }
 
