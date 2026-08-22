@@ -37,29 +37,42 @@ document.addEventListener("DOMContentLoaded", () => {
     setupSpecialInteraction();
 });
 
+function showEntryPreview(target) {
+    entry = document.getElementById('entry');
+    if(target.classList.contains('word')){
+        word = target.getAttribute('word-id')
+        word_span = document.querySelectorAll(`[word-id="${word}"]`)
+        word_span.forEach(span => {span.classList.add('highlight')})
+        entry.textContent = word
+    }
+    else if (target.classList.contains('special-start')){
+        special_id = target.getAttribute('root-id')
+        special_span = document.getElementsByClassName(`special-${special_id}`)
+        for (let i = 0; i < special_span.length; i++) {
+            special_span[i].classList.add('highlight')
+          }
+        special_input = target.getAttribute('special-input')
+        entry.textContent = special_input
+    }
+    else if (target.classList.contains('symbol')){
+        entry.textContent = `${target.textContent}`
+    }
+}
+
 document.querySelector('.terminal-body').addEventListener('mouseenter', function (event) {
     if (event.target.tagName.toLowerCase() === 'span' && event.target.classList != 'hex-address') {
-        entry = document.getElementById('entry');
-        if(event.target.classList.contains('word')){
-            word = event.target.getAttribute('word-id')
-            word_span = document.querySelectorAll(`[word-id="${word}"]`)
-            word_span.forEach(span => {span.classList.add('highlight')})
-            entry.textContent = word
-        }
-        else if (event.target.classList.contains('special-start')){
-            special_id = event.target.getAttribute('root-id')
-            special_span = document.getElementsByClassName(`special-${special_id}`)
-            for (let i = 0; i < special_span.length; i++) {
-                special_span[i].classList.add('highlight')
-              }
-            special_input = event.target.getAttribute('special-input')
-            entry.textContent = special_input
-        }
-        else if (event.target.classList.contains('symbol')){
-            entry.textContent = `${event.target.textContent}`
-        }
+        showEntryPreview(event.target)
     }
 }, true);
+
+// Touchscreens don't fire mouseenter/mouseleave the way a mouse does, so
+// tapping a character wouldn't show the ">" preview line before the tap
+// completes the guess. This mirrors the hover preview on touch-down.
+document.querySelector('.terminal-body').addEventListener('touchstart', function (event) {
+    if (event.target.tagName.toLowerCase() === 'span' && event.target.classList != 'hex-address') {
+        showEntryPreview(event.target)
+    }
+}, { capture: true, passive: true });
 
 document.querySelector('.terminal-body').addEventListener('mouseleave', function (event) {
     if (event.target.tagName.toLowerCase() === 'span' && event.target.classList != 'hex-address') {

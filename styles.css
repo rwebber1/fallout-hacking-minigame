@@ -175,3 +175,18 @@ body {
     margin: 0;
 }
 
+/* Mobile: the terminal's fixed top margin and 90vw cap were tuned for
+   desktop windows. On a narrow phone this claws back a bit of extra
+   width/height for the auto-scaling font-size formula above, without
+   touching the column layout that's already confirmed working. */
+@media (max-width: 700px) {
+    :root {
+        --screen-width: min(96vw, calc(94vh * var(--screen-width-height-ratio)));
+        --padding: 4%;
+    }
+
+    .terminal-screen {
+        margin: 12px auto;
+    }
+}
+
