@@ -177,16 +177,29 @@ body {
 
 /* Mobile: the terminal's fixed top margin and 90vw cap were tuned for
    desktop windows. On a narrow phone this claws back a bit of extra
-   width/height for the auto-scaling font-size formula above, without
-   touching the column layout that's already confirmed working. */
+   width/height for the auto-scaling font-size formula above, tightens
+   the gaps between the four columns, and puts a floor under how small
+   the font is allowed to get - the four-column layout itself is left
+   exactly as-is to stay true to the original terminal's look. Past the
+   floor, the terminal scrolls sideways instead of shrinking further. */
 @media (max-width: 700px) {
     :root {
-        --screen-width: min(96vw, calc(94vh * var(--screen-width-height-ratio)));
-        --padding: 4%;
+        --screen-width: min(98vw, calc(96vh * var(--screen-width-height-ratio)));
+        --padding: 3%;
+        --font-size: max(11px, min(var(--character-max-width), var(--character-max-height)));
     }
 
     .terminal-screen {
-        margin: 12px auto;
+        margin: 8px auto;
+    }
+
+    .word-grid {
+        gap: 0.3ch;
+    }
+
+    .terminal-body {
+        gap: 0.5ch;
+        overflow-x: auto;
     }
 }
 
